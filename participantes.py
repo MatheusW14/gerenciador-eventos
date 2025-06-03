@@ -20,3 +20,4 @@ def cadastrar_participante():
     }
 
     participantes.append({"id": id_participante, **dados})
+    print(f"✅ Participante {dados['nome']} cadastrado! ID: {id_participante}")
