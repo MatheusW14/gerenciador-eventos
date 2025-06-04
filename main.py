@@ -1,6 +1,13 @@
-import participantes
-import eventos
-import relatorios
+from participantes import cadastrar_participante, participantes
+from eventos import cadastrar_evento, listar_eventos, inscrever_participante
+from utils import obter_entrada
+from relatorios import (
+    participantes_mais_ativos,
+    temas_mais_frequentes,
+    eventos_risco_cancelamento,
+    eventos_por_tema,
+)
+from participantes import participantes
 
 
 def mostrar_menu():
@@ -18,101 +25,88 @@ def mostrar_menu():
     print("=" * 50)
 
 
-def mostrar_relatorios():
-    print("\n" + "-" * 50)
-    print("MENU DE RELATÓRIOS")
-    print("-" * 50)
-    print("1. Participantes mais ativos")
-    print("2. Temas mais frequentes")
-    print("3. Eventos em risco de cancelamento")
-    print("4. Eventos por tema")
-    print("5. Voltar")
-    print("-" * 50)
+def menu_relatorios():
+    while True:
+        print("\n=== RELATÓRIOS ===")
+        print("a - Participantes mais ativos")
+        print("b - Temas mais frequentes")
+        print("c - Eventos em risco de cancelamento")
+        print("d - Eventos por tema")
+        print("e - Voltar")
+
+        opcao = input("Escolha uma opção: ").strip().lower()
+
+        if opcao == "a":
+            print("\n--- Participantes mais ativos ---")
+            for pid, total in participantes_mais_ativos():
+                p = next((p for p in participantes if p["id"] == pid), None)
+                nome = p["nome"] if p else "Desconhecido"
+                print(f"{nome} ({pid}) - {total} evento(s)")
+        elif opcao == "b":
+            print("\n--- Temas mais frequentes ---")
+            for tema, total in temas_mais_frequentes():
+                print(f"{tema} - {total} evento(s)")
+        elif opcao == "c":
+            print("\n--- Eventos com risco de cancelamento ---")
+            eventos = eventos_risco_cancelamento()
+            if not eventos:
+                print("Nenhum evento em risco.")
+            for e in eventos:
+                print(
+                    f"{e['nome']} ({e['id']}) - {len(e['participantes'])} participante(s)"
+                )
+        elif opcao == "d":
+            print("\n--- Eventos por tema ---")
+            temas = eventos_por_tema()
+            for tema, lista in temas.items():
+                print(f"\n{tema}:")
+                for nome in lista:
+                    print(f"  - {nome}")
+        elif opcao == "e":
+            break
+        else:
+            print("Opção inválida.")
 
 
 def main():
     while True:
         mostrar_menu()
-        opcao = input("\nEscolha uma opção: ").strip()
+        opcao = input("Escolha uma opção: ").strip()
 
         if opcao == "1":
-            participantes.cadastrar_participante()
-
+            cadastrar_participante()
         elif opcao == "2":
-            eventos.cadastrar_evento()
-
+            cadastrar_evento()
         elif opcao == "3":
-            eventos.listar_eventos()
-            id_evento = input("\nDigite o ID do evento: ").strip()
-            participantes.listar_participantes()
-            id_participante = input("Digite o ID do participante: ").strip()
-            if eventos.inscrever_participante(id_evento, id_participante):
-                print("\n✅ Inscrição realizada com sucesso!")
+            id_evento = input("ID do evento: ")
+            id_participante = input("ID do participante: ")
+            sucesso = inscrever_participante(id_evento, id_participante)
+            if sucesso:
+                print("✅ Participante inscrito com sucesso!")
             else:
-                print("\n❌ Falha na inscrição!")
-
+                print("❌ Participante ou evento não encontrado.")
         elif opcao == "4":
-            eventos.listar_eventos()
-
+            listar_eventos()
         elif opcao == "5":
-            participantes.listar_participantes()
-
+            print("\n--- Participantes cadastrados ---")
+            for p in participantes:
+                print(f"{p['id']}: {p['nome']} - {p['email']}")
         elif opcao == "6":
-            id_participante = input("\nDigite o ID do participante: ").strip()
-            participante = participantes.buscar_participante(id_participante)
-            if participante:
-                print("\n=== Dados do Participante ===")
-                print(f"Nome: {participante['nome']}")
-                print(f"E-mail: {participante['email']}")
-                print(f"Preferências: {', '.join(participante['preferencias'])}")
+            id_busca = input("ID do participante: ").strip()
+            p = next((p for p in participantes if p["id"] == id_busca), None)
+            if p:
+                print(
+                    f"ID: {p['id']}\nNome: {p['nome']}\nEmail: {p['email']}\nPreferências: {', '.join(p['preferencias'])}"
+                )
             else:
-                print("\nParticipante não encontrado!")
-
+                print("❌ Participante não encontrado.")
         elif opcao == "7":
-            while True:
-                mostrar_relatorios()
-                sub_opcao = input("\nEscolha um relatório: ").strip()
-
-                if sub_opcao == "1":
-                    print("\n=== Participantes Mais Ativos ===")
-                    for id_participante, qtd in relatorios.participantes_mais_ativos():
-                        participante = participantes.buscar_participante(
-                            id_participante
-                        )
-                        nome = participante["nome"] if participante else "Desconhecido"
-                        print(f"{nome} (ID: {id_participante}) - {qtd} eventos")
-
-                elif sub_opcao == "2":
-                    print("\n=== Temas Mais Frequentes ===")
-                    for tema, qtd in relatorios.temas_mais_frequentes():
-                        print(f"{tema}: {qtd} eventos")
-
-                elif sub_opcao == "3":
-                    print("\n=== Eventos em Risco de Cancelamento ===")
-                    for evento in relatorios.eventos_risco_cancelamento():
-                        print(
-                            f"{evento['nome']} (ID: {evento['id']}) - {len(evento['participantes'])} participantes"
-                        )
-
-                elif sub_opcao == "4":
-                    print("\n=== Eventos por Tema ===")
-                    for tema, lista_eventos in relatorios.eventos_por_tema().items():
-                        print(f"\nTema: {tema}")
-                        for evento in lista_eventos:
-                            print(f"- {evento}")
-
-                elif sub_opcao == "5":
-                    break
-
-                else:
-                    print("\nOpção inválida!")
-
+            menu_relatorios()
         elif opcao == "8":
-            print("\nSaindo do sistema...")
+            print("Encerrando o sistema. Até logo!")
             break
-
         else:
-            print("\nOpção inválida!")
+            print("Opção inválida. Tente novamente.")
 
 
 if __name__ == "__main__":
