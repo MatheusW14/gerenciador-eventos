@@ -42,3 +42,17 @@ def inscrever_participante(id_evento, id_participante):
         evento["participantes"].append(id_participante)
         return True
     return False
+
+
+def listar_eventos():
+    if not eventos:
+        print("Nenhum evento cadastrado.")
+        return
+
+    print("\n=== Eventos Cadastrados ===")
+    for evento in eventos:
+        print(
+            f"ID: {evento['id']}, Nome: {evento['nome']}, "
+            f"Data: {evento['data']}, Tema: {evento['tema']}, "
+            f"Participantes: {len(evento['participantes'])}"
+        )
