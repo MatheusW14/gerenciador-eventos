@@ -1,13 +1,19 @@
-from participantes import cadastrar_participante, participantes
-from eventos import cadastrar_evento, listar_eventos, inscrever_participante
-from utils import obter_entrada
+from participantes import (
+    cadastrar_participante,
+    participantes,
+)
+from eventos import (
+    cadastrar_evento,
+    listar_eventos,
+    inscrever_participante,
+)
 from relatorios import (
     participantes_mais_ativos,
     temas_mais_frequentes,
     eventos_risco_cancelamento,
     eventos_por_tema,
+    eventos_do_participante,
 )
-from participantes import participantes
 
 
 def mostrar_menu():
@@ -32,7 +38,8 @@ def menu_relatorios():
         print("b - Temas mais frequentes")
         print("c - Eventos em risco de cancelamento")
         print("d - Eventos por tema")
-        print("e - Voltar")
+        print("e - Eventos de um participante")
+        print("f - Voltar")
 
         opcao = input("Escolha uma opção: ").strip().lower()
 
@@ -63,6 +70,15 @@ def menu_relatorios():
                 for nome in lista:
                     print(f"  - {nome}")
         elif opcao == "e":
+            pid = input("Digite o ID do participante: ").strip()
+            eventos_participante = eventos_do_participante(pid)
+            if eventos_participante:
+                print(f"\nEventos em que o participante {pid} está inscrito:")
+                for e in eventos_participante:
+                    print(f"  - {e['nome']} ({e['id']})")
+            else:
+                print("Nenhum evento encontrado para esse participante.")
+        elif opcao == "f":
             break
         else:
             print("Opção inválida.")

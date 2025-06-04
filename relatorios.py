@@ -1,5 +1,4 @@
 from eventos import eventos
-from participantes import participantes
 from collections import Counter
 
 
@@ -23,7 +22,9 @@ def eventos_risco_cancelamento(limite=2):
 def eventos_por_tema():
     temas = {}
     for evento in eventos:
-        if evento["tema"] not in temas:
-            temas[evento["tema"]] = []
-        temas[evento["tema"]].append(evento["nome"])
-    return temas
+        temas.setdefault(evento["tema"], []).append(evento["nome"])
+    return dict(sorted(temas.items()))
+
+
+def eventos_do_participante(id_participante):
+    return [evento for evento in eventos if id_participante in evento["participantes"]]

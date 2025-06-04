@@ -1,9 +1,10 @@
 from utils import obter_entrada
 from participantes import participantes
+from persistencia import salvar_dados, carregar_dados
 import datetime
 import random
 
-eventos = []
+eventos = carregar_dados("eventos.pkl")
 
 
 def gerar_id_evento():
@@ -27,6 +28,7 @@ def cadastrar_evento():
     }
 
     eventos.append(evento)
+    salvar_dados("eventos.pkl", eventos)
     print(f"✅ Evento '{evento['nome']}' cadastrado! ID: {id_evento}")
 
 
@@ -37,9 +39,9 @@ def inscrever_participante(id_evento, id_participante):
     if not evento or not participante:
         return False
 
-    # Verifica duplicidade
     if id_participante not in evento["participantes"]:
         evento["participantes"].append(id_participante)
+        salvar_dados("eventos.pkl", eventos)
         return True
     return False
 
