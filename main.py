@@ -1,11 +1,13 @@
 from participantes import (
     cadastrar_participante,
     participantes,
+    remover_participante,
 )
 from eventos import (
     cadastrar_evento,
     listar_eventos,
     inscrever_participante,
+    remover_evento,
 )
 from relatorios import (
     participantes_mais_ativos,
@@ -27,7 +29,9 @@ def mostrar_menu():
     print("5. Listar participantes")
     print("6. Buscar participante por ID")
     print("7. Relatórios")
-    print("8. Sair")
+    print("8. Remover participante")
+    print("9. Remover evento")
+    print("10. Sair")
     print("=" * 50)
 
 
@@ -119,6 +123,12 @@ def main():
         elif opcao == "7":
             menu_relatorios()
         elif opcao == "8":
+            id_p = input("ID do participante a remover: ").strip()
+            remover_participante(id_p)
+        elif opcao == "9":
+            id_e = input("ID do evento a remover: ").strip()
+            remover_evento(id_e)
+        elif opcao == "10":
             print("Encerrando o sistema. Até logo!")
             break
         else:

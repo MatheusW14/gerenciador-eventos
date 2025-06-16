@@ -23,11 +23,21 @@ def cadastrar_participante():
     participantes.append({"id": id_participante, **dados})
     salvar_dados("participantes.pkl", participantes)
 
-    print(f"✅ Participante {dados['nome']} cadastrado! ID: {id_participante}")
+    print(f"Participante {dados['nome']} cadastrado! ID: {id_participante}")
 
 
 def remover_participante(id_participante):
     global participantes
     participantes = [p for p in participantes if p["id"] != id_participante]
     salvar_dados("participantes.pkl", participantes)
-    print(f"✅ Participante {id_participante} removido!")
+    print(f"Participante {id_participante} removido!")
+
+
+def atualizar_email_participante(id_participante, novo_email):
+    for p in participantes:
+        if p["id"] == id_participante:
+            p["email"] = novo_email
+            salvar_dados("participantes.pkl", participantes)
+            print(f"Email do participante {id_participante} atualizado!")
+            return
+    print("Participante não encontrado.")

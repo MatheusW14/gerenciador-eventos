@@ -58,3 +58,20 @@ def listar_eventos():
             f"Data: {evento['data']}, Tema: {evento['tema']}, "
             f"Participantes: {len(evento['participantes'])}"
         )
+
+
+def remover_evento(id_evento):
+    global eventos
+    eventos = [e for e in eventos if e["id"] != id_evento]
+    salvar_dados("eventos.pkl", eventos)
+    print(f"Evento {id_evento} removido!")
+
+
+def atualizar_tema_evento(id_evento, novo_tema):
+    for e in eventos:
+        if e["id"] == id_evento:
+            e["tema"] = novo_tema
+            salvar_dados("eventos.pkl", eventos)
+            print(f"Tema do evento {id_evento} atualizado!")
+            return
+    print("Evento não encontrado.")
