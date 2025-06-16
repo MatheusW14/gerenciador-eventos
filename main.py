@@ -10,6 +10,8 @@ from eventos import (
     inscrever_participante,
     remover_evento,
     atualizar_tema_evento,
+    buscar_eventos_por_data,
+    buscar_eventos_por_tema,
 )
 from relatorios import (
     participantes_mais_ativos,
@@ -35,7 +37,9 @@ def mostrar_menu():
     print("9. Remover evento")
     print("10. Atualizar email do participante")
     print("11. Atualizar tema do evento")
-    print("12. Sair")
+    print("12. Buscar eventos por tema")
+    print("13. Buscar eventos por faixa de datas")
+    print("14. Sair")
     print("=" * 50)
 
 
@@ -132,16 +136,32 @@ def main():
         elif opcao == "9":
             id_e = input("ID do evento a remover: ").strip()
             remover_evento(id_e)
-        elif opcao == "11":
+        elif opcao == "10":
             id_p = input("ID do participante: ")
             novo_email = input("Novo email: ")
             atualizar_email_participante(id_p, novo_email)
-
-        elif opcao == "12":
+        elif opcao == "11":
             id_e = input("ID do evento: ")
             novo_tema = input("Novo tema: ")
             atualizar_tema_evento(id_e, novo_tema)
-        elif opcao == "10":
+        elif opcao == "12":
+            tema = input("Tema a buscar: ")
+            eventos_encontrados = buscar_eventos_por_tema(tema)
+            if eventos_encontrados:
+                for e in eventos_encontrados:
+                    print(f"{e['nome']} ({e['id']}) - {e['data']}")
+            else:
+                print("Nenhum evento encontrado com esse tema.")
+        elif opcao == "13":
+            data_inicio = input("Data inicial (DD/MM/AAAA): ")
+            data_fim = input("Data final (DD/MM/AAAA): ")
+            eventos_encontrados = buscar_eventos_por_data(data_inicio, data_fim)
+            if eventos_encontrados:
+                for e in eventos_encontrados:
+                    print(f"{e['nome']} ({e['id']}) - {e['data']}")
+            else:
+                print("Nenhum evento encontrado nesse intervalo.")
+        elif opcao == "14":
             print("Encerrando o sistema. Até logo!")
             break
         else:
