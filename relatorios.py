@@ -28,3 +28,14 @@ def eventos_por_tema():
 
 def eventos_do_participante(id_participante):
     return [evento for evento in eventos if id_participante in evento["participantes"]]
+
+
+def taxa_media_participacao_por_tema():
+    temas = {}
+    for evento in eventos:
+        tema = evento["tema"]
+        temas.setdefault(tema, []).append(len(evento["participantes"]))
+
+    return {
+        tema: round(sum(valores) / len(valores), 2) for tema, valores in temas.items()
+    }

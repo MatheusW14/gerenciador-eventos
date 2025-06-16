@@ -20,6 +20,7 @@ from relatorios import (
     eventos_risco_cancelamento,
     eventos_por_tema,
     eventos_do_participante,
+    taxa_media_participacao_por_tema,
 )
 
 
@@ -53,7 +54,8 @@ def menu_relatorios():
         print("c - Eventos em risco de cancelamento")
         print("d - Eventos por tema")
         print("e - Eventos de um participante")
-        print("f - Voltar")
+        print("f - Taxa média de participação por tema")
+        print("g - Voltar")
 
         opcao = input("Escolha uma opção: ").strip().lower()
 
@@ -93,6 +95,11 @@ def menu_relatorios():
             else:
                 print("Nenhum evento encontrado para esse participante.")
         elif opcao == "f":
+            print("\n--- Taxa média de participação por tema ---")
+            medias = taxa_media_participacao_por_tema()
+            for tema, media in medias.items():
+                print(f"{tema}: média de {media} participante(s) por evento")
+        elif opcao == "g":
             break
         else:
             print("Opção inválida.")
