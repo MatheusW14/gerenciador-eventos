@@ -1,6 +1,7 @@
 from utils import obter_entrada
 from participantes import participantes
 from persistencia import salvar_dados, carregar_dados
+from utils import remover_duplicatas
 import datetime
 import random
 
@@ -89,3 +90,18 @@ def buscar_eventos_por_data(data_inicio, data_fim):
     fim = converter(data_fim)
 
     return [e for e in eventos if inicio <= converter(e["data"]) <= fim]
+
+
+def limpar_duplicatas_em_eventos():
+    alterado = False
+    for evento in eventos:
+        originais = evento["participantes"]
+        limpos = remover_duplicatas(originais)
+        if len(originais) != len(limpos):
+            evento["participantes"] = limpos
+            alterado = True
+    if alterado:
+        salvar_dados("eventos.pkl", eventos)
+        print("Duplicatas removidas dos eventos.")
+    else:
+        print("Nenhuma duplicata encontrada.")

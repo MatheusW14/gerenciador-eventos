@@ -12,6 +12,7 @@ from eventos import (
     atualizar_tema_evento,
     buscar_eventos_por_data,
     buscar_eventos_por_tema,
+    limpar_duplicatas_em_eventos,
 )
 from relatorios import (
     participantes_mais_ativos,
@@ -39,7 +40,8 @@ def mostrar_menu():
     print("11. Atualizar tema do evento")
     print("12. Buscar eventos por tema")
     print("13. Buscar eventos por faixa de datas")
-    print("14. Sair")
+    print("14. Remover participantes duplicados dos eventos")
+    print("15. Sair")
     print("=" * 50)
 
 
@@ -162,6 +164,8 @@ def main():
             else:
                 print("Nenhum evento encontrado nesse intervalo.")
         elif opcao == "14":
+            limpar_duplicatas_em_eventos()
+        elif opcao == "15":
             print("Encerrando o sistema. Até logo!")
             break
         else:
