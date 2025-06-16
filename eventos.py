@@ -75,3 +75,17 @@ def atualizar_tema_evento(id_evento, novo_tema):
             print(f"Tema do evento {id_evento} atualizado!")
             return
     print("Evento não encontrado.")
+
+
+def buscar_eventos_por_tema(tema):
+    return [e for e in eventos if e["tema"].lower() == tema.lower()]
+
+
+def buscar_eventos_por_data(data_inicio, data_fim):
+    def converter(data_str):
+        return datetime.datetime.strptime(data_str, "%d/%m/%Y")
+
+    inicio = converter(data_inicio)
+    fim = converter(data_fim)
+
+    return [e for e in eventos if inicio <= converter(e["data"]) <= fim]
