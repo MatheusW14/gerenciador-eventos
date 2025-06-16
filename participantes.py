@@ -24,3 +24,10 @@ def cadastrar_participante():
     salvar_dados("participantes.pkl", participantes)
 
     print(f"✅ Participante {dados['nome']} cadastrado! ID: {id_participante}")
+
+
+def remover_participante(id_participante):
+    global participantes
+    participantes = [p for p in participantes if p["id"] != id_participante]
+    salvar_dados("participantes.pkl", participantes)
+    print(f"✅ Participante {id_participante} removido!")
