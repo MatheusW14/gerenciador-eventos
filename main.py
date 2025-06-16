@@ -2,12 +2,14 @@ from participantes import (
     cadastrar_participante,
     participantes,
     remover_participante,
+    atualizar_email_participante,
 )
 from eventos import (
     cadastrar_evento,
     listar_eventos,
     inscrever_participante,
     remover_evento,
+    atualizar_tema_evento,
 )
 from relatorios import (
     participantes_mais_ativos,
@@ -31,7 +33,9 @@ def mostrar_menu():
     print("7. Relatórios")
     print("8. Remover participante")
     print("9. Remover evento")
-    print("10. Sair")
+    print("10. Atualizar email do participante")
+    print("11. Atualizar tema do evento")
+    print("12. Sair")
     print("=" * 50)
 
 
@@ -102,9 +106,9 @@ def main():
             id_participante = input("ID do participante: ")
             sucesso = inscrever_participante(id_evento, id_participante)
             if sucesso:
-                print("✅ Participante inscrito com sucesso!")
+                print("Participante inscrito com sucesso!")
             else:
-                print("❌ Participante ou evento não encontrado.")
+                print("Participante ou evento não encontrado.")
         elif opcao == "4":
             listar_eventos()
         elif opcao == "5":
@@ -119,7 +123,7 @@ def main():
                     f"ID: {p['id']}\nNome: {p['nome']}\nEmail: {p['email']}\nPreferências: {', '.join(p['preferencias'])}"
                 )
             else:
-                print("❌ Participante não encontrado.")
+                print("Participante não encontrado.")
         elif opcao == "7":
             menu_relatorios()
         elif opcao == "8":
@@ -128,6 +132,15 @@ def main():
         elif opcao == "9":
             id_e = input("ID do evento a remover: ").strip()
             remover_evento(id_e)
+        elif opcao == "11":
+            id_p = input("ID do participante: ")
+            novo_email = input("Novo email: ")
+            atualizar_email_participante(id_p, novo_email)
+
+        elif opcao == "12":
+            id_e = input("ID do evento: ")
+            novo_tema = input("Novo tema: ")
+            atualizar_tema_evento(id_e, novo_tema)
         elif opcao == "10":
             print("Encerrando o sistema. Até logo!")
             break
