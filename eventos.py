@@ -1,7 +1,7 @@
 from utils import obter_entrada
 from participantes import participantes
 from persistencia import salvar_dados, carregar_dados
-from utils import remover_duplicatas
+from utils import remover_duplicatas, obter_entrada
 import datetime
 import random
 
@@ -17,12 +17,20 @@ def gerar_id_evento():
 def cadastrar_evento():
     id_evento = gerar_id_evento()
 
+    def validar_data(data_str):
+        try:
+            datetime.datetime.strptime(data_str, "%d/%m/%Y")
+            return True
+        except ValueError:
+            return False
+
     evento = {
         "id": id_evento,
         "nome": obter_entrada("Nome do evento: "),
         "data": obter_entrada(
             "Data (DD/MM/AAAA): ",
-            lambda x: len(x) == 10 and x[2] == "/" and x[5] == "/",
+            validacao=validar_data,
+            erro="Formato de data inválido! Use DD/MM/AAAA.",
         ),
         "tema": obter_entrada("Tema central: "),
         "participantes": [],
@@ -105,3 +113,48 @@ def limpar_duplicatas_em_eventos():
         print("Duplicatas removidas dos eventos.")
     else:
         print("Nenhuma duplicata encontrada.")
+
+
+def gerenciar_inscricao_evento():
+    id_evento = input("Digite o ID do evento: ").strip()
+    id_participante = input("Digite o ID do participante: ").strip()
+
+    sucesso = inscrever_participante(id_evento, id_participante)
+
+    if sucesso:
+        print("✅ Participante inscrito com sucesso!")
+    else:
+        print(
+            "Erro: Participante ou evento não encontrado, ou participante já inscrito."
+        )
+
+
+def exibir_eventos_por_tema():
+    tema = input("Digite o tema a buscar: ").strip()
+    eventos_encontrados = buscar_eventos_por_tema(tema)
+
+    if eventos_encontrados:
+        print(f"\n--- Eventos com o tema '{tema}' ---")
+        for e in eventos_encontrados:
+            print(f"  - {e['nome']} (ID: {e['id']}) - Data: {e['data']}")
+        print("------------------------------------")
+    else:
+        print("Nenhum evento encontrado com esse tema.")
+
+
+def exibir_eventos_por_data():
+    print("Use o formato DD/MM/AAAA para as datas.")
+    data_inicio = input("Data inicial: ").strip()
+    data_fim = input("Data final: ").strip()
+
+    try:
+        eventos_encontrados = buscar_eventos_por_data(data_inicio, data_fim)
+        if eventos_encontrados:
+            print(f"\n--- Eventos entre {data_inicio} e {data_fim} ---")
+            for e in eventos_encontrados:
+                print(f"  - {e['nome']} (ID: {e['id']}) - Data: {e['data']}")
+            print("---------------------------------------------")
+        else:
+            print("Nenhum evento encontrado nesse intervalo de datas.")
+    except ValueError:
+        print("Formato de data inválido. Por favor, use DD/MM/AAAA.")

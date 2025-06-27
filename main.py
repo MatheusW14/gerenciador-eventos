@@ -1,104 +1,83 @@
 from participantes import (
     cadastrar_participante,
-    participantes,
+    listar_participantes,
     remover_participante,
     atualizar_email_participante,
+    exibir_participante_por_id,
 )
+
 from eventos import (
     cadastrar_evento,
     listar_eventos,
-    inscrever_participante,
     remover_evento,
     atualizar_tema_evento,
-    buscar_eventos_por_data,
-    buscar_eventos_por_tema,
     limpar_duplicatas_em_eventos,
+    gerenciar_inscricao_evento,
+    exibir_eventos_por_tema,
+    exibir_eventos_por_data,
 )
+
 from relatorios import (
-    participantes_mais_ativos,
-    temas_mais_frequentes,
-    eventos_risco_cancelamento,
-    eventos_por_tema,
-    eventos_do_participante,
-    taxa_media_participacao_por_tema,
+    exibir_participantes_mais_ativos,
+    exibir_temas_mais_frequentes,
+    exibir_eventos_risco_cancelamento,
+    exibir_eventos_por_tema_agrupado,
+    exibir_eventos_de_um_participante,
+    exibir_taxa_media_participacao_por_tema,
 )
 
+from utils import limpar_terminal
 
-def mostrar_menu():
+
+def mostrar_menu_principal():
     print("\n" + "=" * 50)
-    print("SISTEMA DE GERENCIAMENTO DE EVENTOS")
+    print("SISTEMA DE GERENCIAMENTO DE EVENTOS".center(50))
     print("=" * 50)
+    print("--- GERENCIAR PARTICIPANTES ---")
     print("1. Cadastrar participante")
-    print("2. Cadastrar evento")
-    print("3. Inscrever participante em evento")
-    print("4. Listar eventos")
-    print("5. Listar participantes")
-    print("6. Buscar participante por ID")
-    print("7. Relatórios")
-    print("8. Remover participante")
-    print("9. Remover evento")
-    print("10. Atualizar email do participante")
+    print("2. Listar participantes")
+    print("3. Buscar participante por ID")
+    print("4. Atualizar email do participante")
+    print("5. Remover participante")
+    print("9. Buscar eventos por tema")
+    print("10. Buscar eventos por faixa de datas")
     print("11. Atualizar tema do evento")
-    print("12. Buscar eventos por tema")
-    print("13. Buscar eventos por faixa de datas")
-    print("14. Remover participantes duplicados dos eventos")
+    print("12. Remover evento")
+    print("\n--- OUTRAS OPÇÕES ---")
+    print("13. Relatórios")
+    print("14. Manutenção: Remover duplicatas")
     print("15. Sair")
     print("=" * 50)
 
 
 def menu_relatorios():
     while True:
-        print("\n=== RELATÓRIOS ===")
-        print("a - Participantes mais ativos")
-        print("b - Temas mais frequentes")
-        print("c - Eventos em risco de cancelamento")
-        print("d - Eventos por tema")
-        print("e - Eventos de um participante")
-        print("f - Taxa média de participação por tema")
-        print("g - Voltar")
+        print("\n" + "=" * 30)
+        print("MENU DE RELATÓRIOS".center(30))
+        print("=" * 30)
+        print("a. Participantes mais ativos")
+        print("b. Temas mais frequentes")
+        print("c. Eventos em risco de cancelamento")
+        print("d. Eventos agrupados por tema")
+        print("e. Eventos de um participante")
+        print("f. Taxa média de participação por tema")
+        print("g. Voltar ao menu principal")
+        print("=" * 30)
 
-        opcao = input("Escolha uma opção: ").strip().lower()
+        opcao = input("Escolha uma opção de relatório: ").strip().lower()
 
         if opcao == "a":
-            print("\n--- Participantes mais ativos ---")
-            for pid, total in participantes_mais_ativos():
-                p = next((p for p in participantes if p["id"] == pid), None)
-                nome = p["nome"] if p else "Desconhecido"
-                print(f"{nome} ({pid}) - {total} evento(s)")
+            exibir_participantes_mais_ativos()
         elif opcao == "b":
-            print("\n--- Temas mais frequentes ---")
-            for tema, total in temas_mais_frequentes():
-                print(f"{tema} - {total} evento(s)")
+            exibir_temas_mais_frequentes()
         elif opcao == "c":
-            print("\n--- Eventos com risco de cancelamento ---")
-            eventos = eventos_risco_cancelamento()
-            if not eventos:
-                print("Nenhum evento em risco.")
-            for e in eventos:
-                print(
-                    f"{e['nome']} ({e['id']}) - {len(e['participantes'])} participante(s)"
-                )
+            exibir_eventos_risco_cancelamento()
         elif opcao == "d":
-            print("\n--- Eventos por tema ---")
-            temas = eventos_por_tema()
-            for tema, lista in temas.items():
-                print(f"\n{tema}:")
-                for nome in lista:
-                    print(f"  - {nome}")
+            exibir_eventos_por_tema_agrupado()
         elif opcao == "e":
-            pid = input("Digite o ID do participante: ").strip()
-            eventos_participante = eventos_do_participante(pid)
-            if eventos_participante:
-                print(f"\nEventos em que o participante {pid} está inscrito:")
-                for e in eventos_participante:
-                    print(f"  - {e['nome']} ({e['id']})")
-            else:
-                print("Nenhum evento encontrado para esse participante.")
+            exibir_eventos_de_um_participante()
         elif opcao == "f":
-            print("\n--- Taxa média de participação por tema ---")
-            medias = taxa_media_participacao_por_tema()
-            for tema, media in medias.items():
-                print(f"{tema}: média de {media} participante(s) por evento")
+            exibir_taxa_media_participacao_por_tema()
         elif opcao == "g":
             break
         else:
@@ -107,69 +86,41 @@ def menu_relatorios():
 
 def main():
     while True:
-        mostrar_menu()
+        mostrar_menu_principal()
         opcao = input("Escolha uma opção: ").strip()
+
+        limpar_terminal()
 
         if opcao == "1":
             cadastrar_participante()
         elif opcao == "2":
-            cadastrar_evento()
+            listar_participantes()
         elif opcao == "3":
-            id_evento = input("ID do evento: ")
-            id_participante = input("ID do participante: ")
-            sucesso = inscrever_participante(id_evento, id_participante)
-            if sucesso:
-                print("Participante inscrito com sucesso!")
-            else:
-                print("Participante ou evento não encontrado.")
+            exibir_participante_por_id()
         elif opcao == "4":
-            listar_eventos()
-        elif opcao == "5":
-            print("\n--- Participantes cadastrados ---")
-            for p in participantes:
-                print(f"{p['id']}: {p['nome']} - {p['email']}")
-        elif opcao == "6":
-            id_busca = input("ID do participante: ").strip()
-            p = next((p for p in participantes if p["id"] == id_busca), None)
-            if p:
-                print(
-                    f"ID: {p['id']}\nNome: {p['nome']}\nEmail: {p['email']}\nPreferências: {', '.join(p['preferencias'])}"
-                )
-            else:
-                print("Participante não encontrado.")
-        elif opcao == "7":
-            menu_relatorios()
-        elif opcao == "8":
-            id_p = input("ID do participante a remover: ").strip()
-            remover_participante(id_p)
-        elif opcao == "9":
-            id_e = input("ID do evento a remover: ").strip()
-            remover_evento(id_e)
-        elif opcao == "10":
-            id_p = input("ID do participante: ")
-            novo_email = input("Novo email: ")
+            id_p = input("ID do participante para atualizar: ")
+            novo_email = input("Digite o novo email: ")
             atualizar_email_participante(id_p, novo_email)
+        elif opcao == "5":
+            id_p_remover = input("Digite o ID do participante a remover: ")
+            remover_participante(id_p_remover)
+        elif opcao == "6":
+            cadastrar_evento()
+        elif opcao == "7":
+            listar_eventos()
+        elif opcao == "8":
+            gerenciar_inscricao_evento()
+        elif opcao == "9":
+            exibir_eventos_por_tema()
+        elif opcao == "10":
+            exibir_eventos_por_data()
         elif opcao == "11":
-            id_e = input("ID do evento: ")
-            novo_tema = input("Novo tema: ")
-            atualizar_tema_evento(id_e, novo_tema)
+            id_evento = input("Digite o ID do evento para atualizar o tema: ")
+            novo_tema = input("Digite o novo tema: ")
+            atualizar_tema_evento(id_evento, novo_tema)
         elif opcao == "12":
-            tema = input("Tema a buscar: ")
-            eventos_encontrados = buscar_eventos_por_tema(tema)
-            if eventos_encontrados:
-                for e in eventos_encontrados:
-                    print(f"{e['nome']} ({e['id']}) - {e['data']}")
-            else:
-                print("Nenhum evento encontrado com esse tema.")
-        elif opcao == "13":
-            data_inicio = input("Data inicial (DD/MM/AAAA): ")
-            data_fim = input("Data final (DD/MM/AAAA): ")
-            eventos_encontrados = buscar_eventos_por_data(data_inicio, data_fim)
-            if eventos_encontrados:
-                for e in eventos_encontrados:
-                    print(f"{e['nome']} ({e['id']}) - {e['data']}")
-            else:
-                print("Nenhum evento encontrado nesse intervalo.")
+            id_evento_remover = input("Digite o ID do evento a remover: ")
+            remover_evento(id_evento_remover)
         elif opcao == "14":
             limpar_duplicatas_em_eventos()
         elif opcao == "15":
