@@ -30,6 +30,28 @@ from utils import limpar_terminal
 
 
 def mostrar_menu_principal():
+    """
+    Exibe o menu principal do Sistema de Gerenciamento de Eventos.
+
+    O menu apresenta as seguintes opções:
+    - Gerenciar participantes:
+        1. Cadastrar participante
+        2. Listar participantes
+        3. Buscar participante por ID
+        4. Atualizar email do participante
+        5. Remover participante
+    - Gerenciar eventos:
+        9. Buscar eventos por tema
+        10. Buscar eventos por faixa de datas
+        11. Atualizar tema do evento
+        12. Remover evento
+    - Outras opções:
+        13. Relatórios
+        14. Manutenção: Remover duplicatas
+        15. Sair
+
+    O menu é exibido com formatação visual para facilitar a navegação.
+    """
     print("\n" + "=" * 50)
     print("SISTEMA DE GERENCIAMENTO DE EVENTOS".center(50))
     print("=" * 50)
@@ -51,6 +73,19 @@ def mostrar_menu_principal():
 
 
 def menu_relatorios():
+    """
+    Displays a menu for generating various reports related to events and participants.
+    Allows the user to select an option to view specific reports or return to the main menu.
+    Menu Options:
+        a. Participantes mais ativos - Displays the most active participants.
+        b. Temas mais frequentes - Displays the most frequent themes.
+        c. Eventos em risco de cancelamento - Displays events at risk of cancellation.
+        d. Eventos agrupados por tema - Displays events grouped by theme.
+        e. Eventos de um participante - Displays events associated with a specific participant.
+        f. Taxa média de participação por tema - Displays the average participation rate per theme.
+        g. Voltar ao menu principal - Returns to the main menu.
+    The function will continue to prompt the user until a valid option is selected or the user chooses to exit.
+    """
     while True:
         print("\n" + "=" * 30)
         print("MENU DE RELATÓRIOS".center(30))
@@ -85,6 +120,30 @@ def menu_relatorios():
 
 
 def main():
+    """
+    Função principal do sistema de gerenciamento de eventos.
+
+    Esta função exibe o menu principal e permite que o usuário escolha entre
+    várias opções para gerenciar participantes, eventos e relatórios. O sistema
+    continuará em execução até que o usuário escolha a opção de sair.
+
+    Opções disponíveis:
+        1. Cadastrar participante
+        2. Listar participantes
+        3. Buscar participante por ID
+        4. Atualizar email do participante
+        5. Remover participante
+        6. Cadastrar evento
+        7. Listar eventos
+        8. Gerenciar inscrição em evento
+        9. Buscar eventos por tema
+        10. Buscar eventos por faixa de datas
+        11. Atualizar tema do evento
+        12. Remover evento
+        13. Relatórios
+        14. Manutenção: Remover duplicatas
+        15. Sair
+    """
     while True:
         mostrar_menu_principal()
         opcao = input("Escolha uma opção: ").strip()
