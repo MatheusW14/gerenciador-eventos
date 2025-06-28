@@ -9,7 +9,6 @@ from utils import (
     validar_data_futura,
 )
 
-
 eventos = carregar_dados("eventos.pkl")
 
 
@@ -76,6 +75,7 @@ def listar_eventos():
 
 
 def remover_evento(id_evento):
+
     global eventos
     eventos = [e for e in eventos if e["id"] != id_evento]
     salvar_dados("eventos.pkl", eventos)
