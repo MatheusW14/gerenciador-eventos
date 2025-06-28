@@ -1,9 +1,14 @@
-from utils import obter_entrada
+import random
+import datetime
 from participantes import participantes
 from persistencia import salvar_dados, carregar_dados
-from utils import remover_duplicatas, obter_entrada
-import datetime
-import random
+from utils import (
+    obter_entrada,
+    remover_duplicatas,
+    validar_nao_vazio,
+    validar_data_futura,
+)
+
 
 eventos = carregar_dados("eventos.pkl")
 
@@ -17,22 +22,23 @@ def gerar_id_evento():
 def cadastrar_evento():
     id_evento = gerar_id_evento()
 
-    def validar_data(data_str):
-        try:
-            datetime.datetime.strptime(data_str, "%d/%m/%Y")
-            return True
-        except ValueError:
-            return False
-
     evento = {
         "id": id_evento,
-        "nome": obter_entrada("Nome do evento: "),
+        "nome": obter_entrada(
+            "Nome do evento: ",
+            validacao=validar_nao_vazio,
+            erro="O nome do evento não pode ser vazio.",
+        ),
         "data": obter_entrada(
             "Data (DD/MM/AAAA): ",
-            validacao=validar_data,
-            erro="Formato de data inválido! Use DD/MM/AAAA.",
+            validacao=validar_data_futura,
+            erro="Data inválida. Use o formato DD/MM/AAAA e não insira uma data passada.",
         ),
-        "tema": obter_entrada("Tema central: "),
+        "tema": obter_entrada(
+            "Tema central: ",
+            validacao=validar_nao_vazio,
+            erro="O tema não pode ser vazio.",
+        ),
         "participantes": [],
     }
 

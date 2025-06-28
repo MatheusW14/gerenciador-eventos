@@ -1,8 +1,9 @@
-from utils import obter_entrada
-from persistencia import salvar_dados, carregar_dados
 import random
+from utils import obter_entrada, validar_nao_vazio, validar_nome_proprio, validar_email
+from persistencia import salvar_dados, carregar_dados
 
-participantes = carregar_dados("participantes.pkl")
+
+participantes = {carregar_dados("participantes.pkl")}
 
 
 def gerar_id_participante():
@@ -13,17 +14,27 @@ def cadastrar_participante():
     id_participante = gerar_id_participante()
 
     dados = {
-        "nome": obter_entrada("Nome Completo: "),
-        "email": obter_entrada("E-mail: "),
-        "preferencias": obter_entrada(
-            "Preferências temáticas (separadas por vírgula): "
-        ).split(","),
+        "nome": obter_entrada(
+            "Nome Completo: ",
+            validacao=validar_nome_proprio,
+            erro="Nome inválido. Use apenas letras e espaços.",
+        ),
+        "email": obter_entrada(
+            "E-mail: ", validacao=validar_email, erro="Formato de e-mail inválido."
+        ),
+        "preferencias": [
+            pref.strip()
+            for pref in obter_entrada(
+                "Preferências temáticas (separadas por vírgula): ",
+                validacao=validar_nao_vazio,
+                erro="As preferências não podem ficar em branco.",
+            ).split(",")
+        ],
     }
 
     participantes.append({"id": id_participante, **dados})
     salvar_dados("participantes.pkl", participantes)
-
-    print(f"Participante {dados['nome']} cadastrado! ID: {id_participante}")
+    print(f"✅ Participante {dados['nome']} cadastrado! ID: {id_participante}")
 
 
 def listar_participantes():
