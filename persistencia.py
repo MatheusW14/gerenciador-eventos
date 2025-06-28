@@ -1,4 +1,3 @@
-# persistencia.py
 import pickle
 import os
 

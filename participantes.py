@@ -3,7 +3,7 @@ from utils import obter_entrada, validar_nao_vazio, validar_nome_proprio, valida
 from persistencia import salvar_dados, carregar_dados
 
 
-participantes = {carregar_dados("participantes.pkl")}
+participantes = carregar_dados("participantes.pkl")
 
 
 def gerar_id_participante():
@@ -39,32 +39,66 @@ def cadastrar_participante():
 
 def listar_participantes():
     print("\n--- Participantes cadastrados ---")
+    if not participantes:
+        print("Nenhum participante cadastrado.")
+        return
     for p in participantes:
         print(f"{p['id']}: {p['nome']} - {p['email']}")
 
 
-def remover_participante(id_participante):
+def remover_participante():
 
-    global participantes
+    print("\n--- Participantes Atuais ---")
+    if not participantes:
+        print("Nenhum participante cadastrado para remover.")
+        return
+
+    for p in participantes:
+        print(f"ID: {p['id']}, Nome: {p['nome']}")
+
+    id_para_remover = input(
+        "\nDigite o ID do participante que deseja remover: "
+    ).strip()
 
     tamanho_antes = len(participantes)
-    participantes = [p for p in participantes if p["id"] != id_participante]
+    participantes[:] = [p for p in participantes if p["id"] != id_para_remover]
 
     if len(participantes) < tamanho_antes:
         salvar_dados("participantes.pkl", participantes)
-        print(f"Participante {id_participante} removido com sucesso!")
+        print(f"\n✅ Participante {id_para_remover} removido com sucesso!")
     else:
-        print(f"Erro: Participante com ID {id_participante} não foi encontrado.")
+        print(f"\n❌ Erro: Participante com ID {id_para_remover} não foi encontrado.")
 
 
 def atualizar_email_participante(id_participante, novo_email):
+    """Apenas atualiza o email de um participante, dados o ID e o novo email."""
     for p in participantes:
         if p["id"] == id_participante:
             p["email"] = novo_email
             salvar_dados("participantes.pkl", participantes)
-            print(f"Email do participante {id_participante} atualizado!")
+            print(f"\n✅ Email do participante {id_participante} atualizado!")
             return
-    print("Participante não encontrado.")
+    print(f"\nParticipante com ID {id_participante} não encontrado.")
+
+
+def gerenciar_atualizacao_email():
+    """
+    Orquestra a atualização de email: lista os participantes,
+    pede o ID e o novo email, e então chama a função de atualização.
+    """
+    listar_participantes()
+
+    if not participantes:
+        return
+
+    id_p = input("\nDigite o ID do participante para atualizar: ").strip()
+    novo_email = obter_entrada(
+        "Digite o novo email: ",
+        validacao=validar_email,
+        erro="Formato de e-mail inválido.",
+    )
+
+    atualizar_email_participante(id_p, novo_email)
 
 
 def exibir_participante_por_id():

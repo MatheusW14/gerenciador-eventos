@@ -2,7 +2,7 @@ from participantes import (
     cadastrar_participante,
     listar_participantes,
     remover_participante,
-    atualizar_email_participante,
+    gerenciar_atualizacao_email,
     exibir_participante_por_id,
 )
 
@@ -98,12 +98,9 @@ def main():
         elif opcao == "3":
             exibir_participante_por_id()
         elif opcao == "4":
-            id_p = input("ID do participante para atualizar: ")
-            novo_email = input("Digite o novo email: ")
-            atualizar_email_participante(id_p, novo_email)
+            gerenciar_atualizacao_email()
         elif opcao == "5":
-            id_p_remover = input("Digite o ID do participante a remover: ")
-            remover_participante(id_p_remover)
+            remover_participante()
         elif opcao == "6":
             cadastrar_evento()
         elif opcao == "7":
