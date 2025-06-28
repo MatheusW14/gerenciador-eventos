@@ -92,6 +92,31 @@ def atualizar_tema_evento(id_evento, novo_tema):
     print("Evento não encontrado.")
 
 
+def gerenciar_atualizacao_tema():
+    """Orquestra a atualização de tema de um evento."""
+    listar_eventos()
+    if not eventos:
+        return
+
+    id_evento = input("\nDigite o ID do evento para atualizar o tema: ").strip()
+    novo_tema = obter_entrada(
+        "Digite o novo tema: ",
+        validacao=validar_nao_vazio,
+        erro="O tema não pode ser vazio.",
+    )
+    atualizar_tema_evento(id_evento, novo_tema)
+
+
+def gerenciar_remocao_evento():
+    """Orquestra a remoção de um evento."""
+    listar_eventos()
+    if not eventos:
+        return
+
+    id_evento_remover = input("\nDigite o ID do evento a remover: ").strip()
+    remover_evento(id_evento_remover)
+
+
 def buscar_eventos_por_tema(tema):
     return [e for e in eventos if e["tema"].lower() == tema.lower()]
 

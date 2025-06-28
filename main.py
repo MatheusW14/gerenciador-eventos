@@ -9,8 +9,8 @@ from participantes import (
 from eventos import (
     cadastrar_evento,
     listar_eventos,
-    remover_evento,
-    atualizar_tema_evento,
+    gerenciar_remocao_evento,
+    gerenciar_atualizacao_tema,
     limpar_duplicatas_em_eventos,
     gerenciar_inscricao_evento,
     exibir_eventos_por_tema,
@@ -112,12 +112,11 @@ def main():
         elif opcao == "10":
             exibir_eventos_por_data()
         elif opcao == "11":
-            id_evento = input("Digite o ID do evento para atualizar o tema: ")
-            novo_tema = input("Digite o novo tema: ")
-            atualizar_tema_evento(id_evento, novo_tema)
+            gerenciar_atualizacao_tema()
         elif opcao == "12":
-            id_evento_remover = input("Digite o ID do evento a remover: ")
-            remover_evento(id_evento_remover)
+            gerenciar_remocao_evento()
+        elif opcao == "13":
+            menu_relatorios()
         elif opcao == "14":
             limpar_duplicatas_em_eventos()
         elif opcao == "15":
