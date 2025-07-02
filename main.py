@@ -52,6 +52,10 @@ def mostrar_menu_principal():
 
     O menu é exibido com formatação visual para facilitar a navegação.
     """
+    # SUGESTÃO para main.py -> mostrar_menu_principal()
+
+
+def mostrar_menu_principal():
     print("\n" + "=" * 50)
     print("SISTEMA DE GERENCIAMENTO DE EVENTOS".center(50))
     print("=" * 50)
@@ -61,6 +65,10 @@ def mostrar_menu_principal():
     print("3. Buscar participante por ID")
     print("4. Atualizar email do participante")
     print("5. Remover participante")
+    print("\n--- GERENCIAR EVENTOS ---")
+    print("6. Cadastrar evento")
+    print("7. Listar eventos")
+    print("8. Inscrever participante em evento")
     print("9. Buscar eventos por tema")
     print("10. Buscar eventos por faixa de datas")
     print("11. Atualizar tema do evento")
