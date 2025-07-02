@@ -29,57 +29,6 @@ from relatorios import (
 from utils import limpar_terminal
 
 
-def mostrar_menu_principal():
-    """
-    Exibe o menu principal do Sistema de Gerenciamento de Eventos.
-
-    O menu apresenta as seguintes opções:
-    - Gerenciar participantes:
-        1. Cadastrar participante
-        2. Listar participantes
-        3. Buscar participante por ID
-        4. Atualizar email do participante
-        5. Remover participante
-    - Gerenciar eventos:
-        9. Buscar eventos por tema
-        10. Buscar eventos por faixa de datas
-        11. Atualizar tema do evento
-        12. Remover evento
-    - Outras opções:
-        13. Relatórios
-        14. Manutenção: Remover duplicatas
-        15. Sair
-
-    O menu é exibido com formatação visual para facilitar a navegação.
-    """
-    # SUGESTÃO para main.py -> mostrar_menu_principal()
-
-
-def mostrar_menu_principal():
-    print("\n" + "=" * 50)
-    print("SISTEMA DE GERENCIAMENTO DE EVENTOS".center(50))
-    print("=" * 50)
-    print("--- GERENCIAR PARTICIPANTES ---")
-    print("1. Cadastrar participante")
-    print("2. Listar participantes")
-    print("3. Buscar participante por ID")
-    print("4. Atualizar email do participante")
-    print("5. Remover participante")
-    print("\n--- GERENCIAR EVENTOS ---")
-    print("6. Cadastrar evento")
-    print("7. Listar eventos")
-    print("8. Inscrever participante em evento")
-    print("9. Buscar eventos por tema")
-    print("10. Buscar eventos por faixa de datas")
-    print("11. Atualizar tema do evento")
-    print("12. Remover evento")
-    print("\n--- OUTRAS OPÇÕES ---")
-    print("13. Relatórios")
-    print("14. Manutenção: Remover duplicatas")
-    print("15. Sair")
-    print("=" * 50)
-
-
 def menu_relatorios():
     """
     Displays a menu for generating various reports related to events and participants.
@@ -153,7 +102,7 @@ def main():
         15. Sair
     """
     while True:
-        mostrar_menu_principal()
+        menu_relatorios()
         opcao = input("Escolha uma opção: ").strip()
 
         limpar_terminal()

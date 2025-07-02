@@ -16,7 +16,16 @@ def obter_entrada(prompt, *args, validacao=None, erro="Entrada inválida", **kwa
 
 
 def remover_duplicatas(lista):
-    """Remove itens duplicados mantendo ordem"""
+    """
+    Remove os elementos duplicados de uma lista, preservando a ordem original.
+
+    Args:
+        lista (list): A lista de elementos que pode conter duplicatas.
+
+    Returns:
+        list: Uma nova lista contendo apenas os elementos únicos da lista original,
+        na mesma ordem em que aparecem.
+    """
     return list(dict.fromkeys(lista))
 
 
