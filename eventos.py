@@ -132,8 +132,15 @@ def remover_evento(id_evento):
         >>> remover_evento(3)
         Evento 3 removido!
     """
-
     global eventos
+    print("\n--- Eventos Atuais ---")
+    if not eventos:
+        print("Nenhum evento cadastrado.")
+        return
+
+    for evento in eventos:
+        print(f"ID: {evento['id']}, Nome: {evento['nome']}, ")
+
     eventos = [e for e in eventos if e["id"] != id_evento]
     salvar_dados("eventos.pkl", eventos)
     print(f"Evento {id_evento} removido!")
