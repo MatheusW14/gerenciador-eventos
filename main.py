@@ -30,6 +30,32 @@ from utils import limpar_terminal
 
 
 def mostrar_menu_principal():
+    """
+    Exibe o menu principal do sistema de gerenciamento de eventos.
+
+    O menu apresenta uma lista de opções numeradas que permitem ao usuário
+    realizar diversas operações relacionadas a participantes e eventos, como
+    cadastro, listagem, busca, atualização, remoção e geração de relatórios.
+
+    Opções disponíveis:
+        1. Cadastrar participante
+        2. Listar participantes
+        3. Buscar participante por ID
+        4. Atualizar email do participante
+        5. Remover participante
+        6. Cadastrar evento
+        7. Listar eventos
+        8. Inscrever participante em evento
+        9. Buscar eventos por tema
+        10. Buscar eventos por faixa de datas
+        11. Atualizar tema do evento
+        12. Remover evento
+        13. Relatórios
+        14. Manutenção: Remover duplicatas
+        15. Sair
+
+    O menu é exibido com formatação visual para facilitar a leitura e a navegação.
+    """
     print("\n" + "=" * 50)
     print("SISTEMA DE GERENCIAMENTO DE EVENTOS".center(50))
     print("=" * 50)
@@ -83,6 +109,8 @@ def menu_relatorios():
         print("=" * 30)
 
         opcao = input("Escolha uma opção de relatório: ").strip().lower()
+
+        limpar_terminal()
 
         if opcao == "a":
             exibir_participantes_mais_ativos()
